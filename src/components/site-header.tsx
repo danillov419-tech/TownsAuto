@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Phone, Menu, X } from "lucide-react";
+import { MessageCircle, Menu, X } from "lucide-react";
 import { Logo } from "./logo";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/format";
@@ -47,9 +47,14 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <a href={siteConfig.phoneHref} className="btn-success hidden sm:inline-flex">
-            <Phone className="h-4 w-4" />
-            Call Now
+          <a
+            href={siteConfig.whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-success hidden sm:inline-flex"
+          >
+            <MessageCircle className="h-4 w-4" />
+            WhatsApp
           </a>
           <button
             type="button"
@@ -80,9 +85,14 @@ export function SiteHeader() {
                 {link.label}
               </Link>
             ))}
-            <a href={siteConfig.phoneHref} className="btn-success mt-2">
-              <Phone className="h-4 w-4" />
-              Call {siteConfig.phone}
+            <a
+              href={siteConfig.whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-success mt-2"
+            >
+              <MessageCircle className="h-4 w-4" />
+              WhatsApp {siteConfig.whatsapp}
             </a>
           </nav>
         </div>

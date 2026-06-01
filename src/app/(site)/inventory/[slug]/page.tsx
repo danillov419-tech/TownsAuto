@@ -11,7 +11,7 @@ import {
   ShieldCheck,
   CheckCircle2,
   DollarSign,
-  Phone,
+  MessageCircle,
 } from "lucide-react";
 import { getAllVehiclesForAdmin, getVehicleBySlug, getRelatedVehicles } from "@/lib/vehicles";
 import { formatMileage, formatMoney, vehicleTitle } from "@/lib/format";
@@ -154,9 +154,14 @@ export default async function VehicleDetailPage({
               <div className="mt-5 space-y-2">
                 <a href="#reserve" className="btn-primary w-full">Reserve This Vehicle</a>
                 <a href="#contact" className="btn-outline w-full">Ask a Question</a>
-                <a href={siteConfig.phoneHref} className="btn-success w-full">
-                  <Phone className="h-4 w-4" />
-                  Call {siteConfig.phone}
+                <a
+                  href={siteConfig.whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-success w-full"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  WhatsApp Us
                 </a>
               </div>
             </div>

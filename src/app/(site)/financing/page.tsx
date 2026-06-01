@@ -70,7 +70,7 @@ export default function FinancingPage() {
                 </li>
                 <li className="flex gap-2">
                   <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-success-600" />
-                  Questions? Call us at {siteConfig.phone}.
+                  Questions? Message us on WhatsApp at {siteConfig.whatsapp}.
                 </li>
               </ul>
             </div>

@@ -75,7 +75,8 @@ export default function PaymentPage() {
                 </li>
                 <li>
                   If anyone claims to be us and asks for an upfront wire transfer,
-                  it&apos;s a scam — please call us directly at {siteConfig.phone}.
+                  it&apos;s a scam — please contact us directly on WhatsApp at{" "}
+                  {siteConfig.whatsapp}.
                 </li>
               </ul>
             </div>

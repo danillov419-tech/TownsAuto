@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 import { PageHero } from "@/components/page-hero";
 import { LeadForm } from "@/components/forms/lead-form";
 import { siteConfig } from "@/lib/site-config";
@@ -30,11 +30,27 @@ export default function ContactPage() {
 
             <ul className="space-y-4">
               <li className="card flex items-center gap-4 p-5">
+                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-success-600/10 text-success-600">
+                  <MessageCircle className="h-6 w-6" />
+                </span>
+                <div>
+                  <p className="text-sm text-ink-500">WhatsApp</p>
+                  <a
+                    href={siteConfig.whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-ink-900 hover:text-brand-700"
+                  >
+                    {siteConfig.whatsapp}
+                  </a>
+                </div>
+              </li>
+              <li className="card flex items-center gap-4 p-5">
                 <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
                   <Phone className="h-6 w-6" />
                 </span>
                 <div>
-                  <p className="text-sm text-ink-500">Phone</p>
+                  <p className="text-sm text-ink-500">Call</p>
                   <a href={siteConfig.phoneHref} className="font-semibold text-ink-900 hover:text-brand-700">
                     {siteConfig.phone}
                   </a>

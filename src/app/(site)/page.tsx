@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  Phone,
+  MessageCircle,
   DollarSign,
   ShieldCheck,
   Truck,
@@ -84,9 +84,14 @@ export default async function HomePage() {
               Find Your Car Now
               <ArrowRight className="h-5 w-5" />
             </Link>
-            <a href={siteConfig.phoneHref} className="btn-success px-7 py-3 text-base">
-              <Phone className="h-5 w-5" />
-              Call {siteConfig.phone}
+            <a
+              href={siteConfig.whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-success px-7 py-3 text-base"
+            >
+              <MessageCircle className="h-5 w-5" />
+              WhatsApp Us
             </a>
           </div>
 

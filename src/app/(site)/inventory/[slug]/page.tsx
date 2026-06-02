@@ -12,13 +12,17 @@ import {
   CheckCircle2,
   DollarSign,
   MessageCircle,
+  Lock,
+  CreditCard,
+  FileText,
+  Mail,
 } from "lucide-react";
 import { getAllVehiclesForAdmin, getVehicleBySlug, getRelatedVehicles } from "@/lib/vehicles";
 import { formatMileage, formatMoney, vehicleTitle } from "@/lib/format";
 import { siteConfig } from "@/lib/site-config";
 import { VehicleImage } from "@/components/vehicle-image";
 import { VehicleCard } from "@/components/vehicle-card";
-import { LeadForm } from "@/components/forms/lead-form";
+import { VehicleInquiry } from "@/components/vehicle-inquiry";
 
 export async function generateMetadata({
   params,
@@ -152,13 +156,34 @@ export default async function VehicleDetailPage({
               )}
 
               <div className="mt-5 space-y-2">
-                <a href="#reserve" className="btn-primary w-full">Reserve This Vehicle</a>
-                <a href="#contact" className="btn-outline w-full">Ask a Question</a>
+                <div className="grid grid-cols-2 gap-2">
+                  <a href="#reserve" className="btn-primary">
+                    <Lock className="h-4 w-4" />
+                    Reserve
+                  </a>
+                  <a href="#buy" className="btn-success">
+                    <CreditCard className="h-4 w-4" />
+                    Buy Outright
+                  </a>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <a
+                    href="#finance"
+                    className="btn border border-success-600/40 text-success-700 hover:bg-success-600/5"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Finance
+                  </a>
+                  <a href="#contact" className="btn-outline">
+                    <Mail className="h-4 w-4" />
+                    Contact
+                  </a>
+                </div>
                 <a
                   href={siteConfig.whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-success w-full"
+                  className="btn-ghost w-full text-success-700 hover:bg-success-600/5"
                 >
                   <MessageCircle className="h-4 w-4" />
                   WhatsApp Us
@@ -182,40 +207,9 @@ export default async function VehicleDetailPage({
           </div>
         </div>
 
-        {/* Forms */}
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
-          <div id="reserve" className="card scroll-mt-24 p-6">
-            <h2 className="text-xl font-bold text-ink-900">Reserve this {vehicle.make}</h2>
-            <p className="mt-1 text-sm text-ink-500">
-              Let us know you&apos;re interested and we&apos;ll hold it while we get in touch.
-              No payment required to request a hold.
-            </p>
-            <div className="mt-5">
-              <LeadForm
-                type="reserve"
-                vehicleId={vehicle.id}
-                vehicleLabel={title}
-                submitLabel="Request to Reserve"
-                defaultMessage={`I'd like to reserve the ${title}.`}
-              />
-            </div>
-          </div>
-
-          <div id="contact" className="card scroll-mt-24 p-6">
-            <h2 className="text-xl font-bold text-ink-900">Ask about this vehicle</h2>
-            <p className="mt-1 text-sm text-ink-500">
-              Questions about condition, history, or financing? Send a message.
-            </p>
-            <div className="mt-5">
-              <LeadForm
-                type="contact"
-                vehicleId={vehicle.id}
-                vehicleLabel={title}
-                submitLabel="Send Question"
-                defaultMessage={`I have a question about the ${title}.`}
-              />
-            </div>
-          </div>
+        {/* Inquiry */}
+        <div className="mt-12">
+          <VehicleInquiry vehicleId={vehicle.id} vehicleLabel={title} />
         </div>
 
         {related.length > 0 && (

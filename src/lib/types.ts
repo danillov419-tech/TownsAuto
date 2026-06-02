@@ -47,7 +47,7 @@ export interface NewVehicle
   slug?: string;
 }
 
-export type LeadType = "contact" | "reserve" | "buy" | "test_drive";
+export type LeadType = "contact" | "reserve" | "buy" | "finance" | "test_drive";
 
 export interface Lead {
   id?: string;

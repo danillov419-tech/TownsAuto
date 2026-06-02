@@ -9,6 +9,7 @@ const typeLabels: Record<string, string> = {
   contact: "Question",
   reserve: "Reservation",
   buy: "Purchase",
+  finance: "Financing",
   test_drive: "Test Drive",
 };
 

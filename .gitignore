@@ -37,6 +37,10 @@ yarn-error.log*
 # netlify
 .netlify
 
+# local admin/secret SQL (contains plaintext credentials — never commit)
+supabase/create-admin.sql
+supabase/*.local.sql
+
 # vercel
 .vercel
 

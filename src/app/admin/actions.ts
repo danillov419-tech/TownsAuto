@@ -95,9 +95,10 @@ export async function saveVehicle(
   }
 
   revalidatePath("/admin");
+  revalidatePath("/admin/inventory");
   revalidatePath("/inventory");
   revalidatePath("/");
-  redirect("/admin?saved=1");
+  redirect("/admin/inventory?saved=1");
 }
 
 export async function deleteVehicle(form: FormData): Promise<void> {
@@ -106,6 +107,7 @@ export async function deleteVehicle(form: FormData): Promise<void> {
   const supabase = await createClient();
   await supabase.from("vehicles").delete().eq("id", id);
   revalidatePath("/admin");
+  revalidatePath("/admin/inventory");
   revalidatePath("/inventory");
 }
 

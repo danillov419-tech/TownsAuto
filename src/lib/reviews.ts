@@ -43,14 +43,19 @@ export async function getAllReviewsForAdmin(): Promise<Review[]> {
   if (!isSupabaseConfigured) {
     return [...sampleReviews].sort(bySort);
   }
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("reviews")
-    .select("*")
-    .order("sort_order", { ascending: true })
-    .order("created_at", { ascending: false });
-  if (error) throw error;
-  return (data as Review[]) ?? [];
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("reviews")
+      .select("*")
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return (data as Review[]) ?? [];
+  } catch (err) {
+    console.error("getAllReviewsForAdmin failed, using sample data:", err);
+    return [...sampleReviews].sort(bySort);
+  }
 }
 
 export async function getReviewById(id: string): Promise<Review | null> {

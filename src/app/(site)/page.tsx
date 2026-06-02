@@ -11,6 +11,8 @@ import {
   Car,
   CheckCircle2,
   Star,
+  Wallet,
+  Euro,
 } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { getFeaturedVehicles } from "@/lib/vehicles";
@@ -21,6 +23,30 @@ const features = [
   { icon: ShieldCheck, title: "Simple Financing", desc: "Flexible options for buyers of all backgrounds." },
   { icon: Truck, title: "Nationwide Delivery", desc: `Serving ${siteConfig.serviceArea.join(", ")} & more.` },
   { icon: Award, title: "8+ Years Experience", desc: "A trusted seller with a track record." },
+];
+
+const pricingReasons = [
+  {
+    icon: DollarSign,
+    title: "Direct Sourcing",
+    desc: "We source directly from dealer-only auctions, bypassing traditional dealership markups and ensuring you get wholesale prices.",
+    iconColor: "text-brand-600",
+    cardBg: "bg-brand-50",
+  },
+  {
+    icon: Wallet,
+    title: "Low Overhead",
+    desc: "Our low overhead means we don't have expensive showrooms or large sales teams. These savings are passed directly to you.",
+    iconColor: "text-success-600",
+    cardBg: "bg-green-50",
+  },
+  {
+    icon: Euro,
+    title: "Fair Pricing",
+    desc: "Fair pricing is our commitment. We provide transparent, competitive prices without hidden fees, so you always get a great deal.",
+    iconColor: "text-accent-600",
+    cardBg: "bg-amber-50",
+  },
 ];
 
 const policies = [
@@ -109,6 +135,30 @@ export default async function HomePage() {
                 <f.icon className="mx-auto h-8 w-8 text-accent-400" />
                 <h3 className="mt-3 font-semibold">{f.title}</h3>
                 <p className="mt-1 text-sm text-ink-200">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why our prices are affordable */}
+      <section className="bg-white py-20">
+        <div className="container-page">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-extrabold text-ink-900 sm:text-4xl">
+              Why Our Prices Are So Affordable
+            </h2>
+            <p className="mt-4 text-ink-500">
+              We believe everyone deserves a great car at a fair price. Here&apos;s
+              how we make it happen:
+            </p>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {pricingReasons.map((r) => (
+              <div key={r.title} className={`rounded-2xl p-8 text-center ${r.cardBg}`}>
+                <r.icon className={`mx-auto h-9 w-9 ${r.iconColor}`} strokeWidth={2.25} />
+                <h3 className="mt-4 text-lg font-bold text-ink-900">{r.title}</h3>
+                <p className="mt-3 text-ink-600">{r.desc}</p>
               </div>
             ))}
           </div>

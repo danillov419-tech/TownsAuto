@@ -1,27 +1,33 @@
 import "server-only";
 
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import { siteConfig } from "./site-config";
 
 /**
- * Admin email notifications via Resend.
+ * Admin email notifications over SMTP (e.g. Gmail, your mail host).
  * Configure with env vars:
- *   RESEND_API_KEY   – your Resend API key (required to actually send)
- *   EMAIL_FROM       – verified sender, e.g. "Towns Auto <noreply@townsauto.com>"
- *                      (defaults to Resend's test sender during setup)
- *   NOTIFY_EMAIL     – where notifications go (defaults to siteConfig.email)
+ *   SMTP_HOST    – e.g. smtp.gmail.com
+ *   SMTP_PORT    – 587 (STARTTLS) or 465 (SSL). Default 587.
+ *   SMTP_USER    – SMTP username (the full email for Gmail)
+ *   SMTP_PASS    – SMTP password / app password
+ *   SMTP_SECURE  – "true" to force SSL (auto-enabled for port 465)
+ *   EMAIL_FROM   – From header (defaults to SMTP_USER)
+ *   NOTIFY_EMAIL – recipient (defaults to siteConfig.email)
  *
- * If RESEND_API_KEY is not set, email is skipped silently so forms still work.
+ * If SMTP isn't configured, email is skipped silently so forms still work.
  */
-const apiKey = process.env.RESEND_API_KEY;
-const from = process.env.EMAIL_FROM || "Towns Auto <onboarding@resend.dev>";
+const host = process.env.SMTP_HOST;
+const port = Number(process.env.SMTP_PORT || 587);
+const user = process.env.SMTP_USER;
+const pass = process.env.SMTP_PASS;
+const secure = process.env.SMTP_SECURE === "true" || port === 465;
+const from = process.env.EMAIL_FROM || (user ? `${siteConfig.name} <${user}>` : "");
 const to = process.env.NOTIFY_EMAIL || siteConfig.email;
 
+const smtpConfigured = Boolean(host && user && pass);
+
 function escapeHtml(s: string) {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 function table(rows: [string, string | null | undefined][]) {
@@ -40,13 +46,18 @@ function table(rows: [string, string | null | undefined][]) {
 }
 
 async function send(subject: string, html: string, replyTo?: string) {
-  if (!apiKey) {
-    console.warn("RESEND_API_KEY not set — admin email skipped.");
+  if (!smtpConfigured) {
+    console.warn("SMTP not configured — admin email skipped.");
     return;
   }
   try {
-    const resend = new Resend(apiKey);
-    await resend.emails.send({
+    const transport = nodemailer.createTransport({
+      host,
+      port,
+      secure,
+      auth: { user, pass },
+    });
+    await transport.sendMail({
       from,
       to,
       subject,

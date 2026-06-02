@@ -62,27 +62,35 @@ Restart `npm run dev` after editing `.env.local`.
 - Replace the sample reviews in `src/app/(site)/reviews/page.tsx`.
 - Add real vehicles and photos through the `/admin` dashboard.
 
-## Email notifications (optional but recommended)
+## Email notifications via SMTP (optional but recommended)
 
 When a customer submits any form (reserve, buy, finance, contact, financing),
-an email alert is sent to your admin inbox.
+an email alert is sent to your admin inbox over SMTP.
 
-1. Create a free account at [resend.com](https://resend.com) (sign up with the
-   address you want alerts to go to, e.g. `kelvinej191@gmail.com`).
-2. Create an **API key** and add it to `.env.local` (and Netlify env vars):
+**Using Gmail:**
+1. On the Google account (`kelvinej191@gmail.com`), enable **2-Step
+   Verification**.
+2. Go to **Google Account → Security → App passwords**, create one for "Mail",
+   and copy the 16-character password.
+3. Add to `.env.local` (and Netlify → Environment variables):
 
    ```
-   RESEND_API_KEY=re_xxxxxxxx
-   EMAIL_FROM=Towns Auto <onboarding@resend.dev>
+   SMTP_HOST=smtp.gmail.com
+   SMTP_PORT=587
+   SMTP_USER=kelvinej191@gmail.com
+   SMTP_PASS=your-16-char-app-password
+   EMAIL_FROM=Towns Auto <kelvinej191@gmail.com>
    NOTIFY_EMAIL=kelvinej191@gmail.com
    ```
 
-3. For testing, `onboarding@resend.dev` can send to your own Resend account
-   email. For production (sending reliably to any inbox), verify your domain in
-   Resend → **Domains**, then set `EMAIL_FROM` to e.g. `noreply@townsautos.com`.
+Any SMTP provider works (Zoho, Outlook, your host, SendGrid SMTP, etc.) — just
+set the matching `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS`. Use
+`SMTP_PORT=465` for SSL.
 
-If `RESEND_API_KEY` is not set, forms still work and save normally — they just
-don't send an email.
+If SMTP isn't configured, forms still work and save normally — they just don't
+send an email. (Note: some serverless hosts restrict outbound SMTP; Netlify
+Functions allow it, but if delivery ever fails, an API-based provider is the
+fallback.)
 
 ## 4. Deploy to Netlify
 

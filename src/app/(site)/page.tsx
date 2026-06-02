@@ -418,18 +418,23 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* CTA */}
-      <section className="bg-brand-700 py-16 text-white">
-        <div className="container-page flex flex-col items-center justify-between gap-6 text-center md:flex-row md:text-left">
-          <div>
-            <h2 className="text-2xl font-bold sm:text-3xl">Ready to find your next car?</h2>
-            <p className="mt-2 text-brand-100">
-              Get pre-qualified in minutes or reach out with any questions.
-            </p>
-          </div>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Link href="/financing" className="btn-accent px-6 py-3">Get Pre-Qualified</Link>
-            <Link href="/contact" className="btn bg-white px-6 py-3 text-brand-700 hover:bg-ink-100">
+      {/* Final CTA */}
+      <section className="bg-gradient-to-r from-brand-900 via-brand-700 to-brand-500 py-20 text-center text-white">
+        <div className="container-page">
+          <h2 className="mx-auto max-w-3xl text-3xl font-extrabold leading-tight sm:text-4xl">
+            Your Journey to a Great Car Starts Here.
+            <br />
+            No Regrets, Just Miles of Smiles.
+          </h2>
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-brand-100">
+            Ready to experience the difference? Browse our inventory or contact us
+            directly. Let&apos;s find your perfect car together.
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link href="/inventory" className="btn-accent px-7 py-3 text-base">
+              Browse Inventory
+            </Link>
+            <Link href="/contact" className="btn bg-white px-7 py-3 text-base text-brand-700 hover:bg-ink-100">
               Contact Us
             </Link>
           </div>

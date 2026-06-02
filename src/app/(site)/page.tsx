@@ -13,6 +13,7 @@ import {
   Star,
   Wallet,
   Euro,
+  Calendar,
 } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { getFeaturedVehicles } from "@/lib/vehicles";
@@ -46,6 +47,24 @@ const pricingReasons = [
     desc: "Fair pricing is our commitment. We provide transparent, competitive prices without hidden fees, so you always get a great deal.",
     iconColor: "text-accent-600",
     cardBg: "bg-amber-50",
+  },
+];
+
+const buyingPolicy = [
+  {
+    icon: Calendar,
+    title: "Appointments Required",
+    desc: "All vehicle viewings and purchases are by appointment only. This ensures personalized attention and efficient service.",
+  },
+  {
+    icon: Car,
+    title: "Reservation Required for Viewing",
+    desc: "If you are interested in viewing a vehicle, you must reserve it in advance. This guarantees the vehicle is held exclusively for you at the scheduled time.",
+  },
+  {
+    icon: DollarSign,
+    title: "Reservation Fee: $300",
+    desc: "A $300 reservation fee is required to hold the vehicle. This fee is part of the down payment if you proceed with the purchase. If you choose not to proceed, the fee is fully refundable. This policy helps us prioritize serious buyers while maintaining flexibility and fairness.",
   },
 ];
 
@@ -162,6 +181,34 @@ export default async function HomePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Our vehicle buying policy */}
+      <section className="bg-white py-20">
+        <div className="container-page">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-extrabold text-ink-900 sm:text-4xl">
+              Our Vehicle Buying Policy
+            </h2>
+            <p className="mt-4 text-ink-500">
+              To ensure a smooth and professional buying experience, please review
+              the following policy:
+            </p>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {buyingPolicy.map((p) => (
+              <div key={p.title} className="rounded-2xl bg-ink-50 p-8 text-center shadow-sm">
+                <p.icon className="mx-auto h-9 w-9 text-brand-600" strokeWidth={2.25} />
+                <h3 className="mt-5 text-lg font-bold text-ink-900">{p.title}</h3>
+                <p className="mt-3 text-ink-600">{p.desc}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-12 text-center font-semibold text-ink-800">
+            Thank you for your cooperation and understanding. We look forward to
+            assisting you!
+          </p>
         </div>
       </section>
 

@@ -303,11 +303,14 @@ export function VehicleActions({
   actions = ["reserve", "buy", "finance", "contact"],
   variant = "card",
   labels,
+  contactHref,
 }: {
   vehicle: VehicleLite;
   actions?: ActionKey[];
   variant?: "card" | "detail";
   labels?: Partial<Record<ActionKey, string>>;
+  /** If set, the "contact" action links here instead of opening a modal. */
+  contactHref?: string;
 }) {
   const [open, setOpen] = useState<ActionKey | null>(null);
   // Bump on each open so the modal remounts with fresh form state.
@@ -324,6 +327,14 @@ export function VehicleActions({
         <div className="grid grid-cols-2 gap-2">
           {actions.map((a) => {
             const c = CONFIG[a];
+            if (a === "contact" && contactHref) {
+              return (
+                <Link key={a} href={contactHref} className={c.btnClass}>
+                  <c.icon className="h-4 w-4" />
+                  {c.label}
+                </Link>
+              );
+            }
             return (
               <button key={a} type="button" onClick={() => openModal(a)} className={c.btnClass}>
                 <c.icon className="h-4 w-4" />

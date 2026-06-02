@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useState } from "react";
-import { Send, Phone } from "lucide-react";
+import { Send, MessageCircle } from "lucide-react";
 import { submitLead, type FormState } from "@/app/actions";
 import { FormStatus } from "./forms/form-status";
 import { siteConfig } from "@/lib/site-config";
@@ -101,13 +101,15 @@ export function VehicleContactCard({
         </button>
       </form>
 
-      <p className="mt-4 text-center text-sm text-ink-500">Or call directly:</p>
+      <p className="mt-4 text-center text-sm text-ink-500">Or message us directly:</p>
       <a
-        href={siteConfig.phoneHref}
-        className="btn mt-2 w-full border border-ink-200 bg-white text-ink-800 hover:bg-ink-50"
+        href={siteConfig.whatsappHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="btn-success mt-2 w-full"
       >
-        <Phone className="h-4 w-4" />
-        Call {siteConfig.phone}
+        <MessageCircle className="h-4 w-4" />
+        WhatsApp {siteConfig.whatsapp}
       </a>
     </div>
   );

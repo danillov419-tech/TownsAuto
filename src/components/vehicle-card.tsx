@@ -76,6 +76,7 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
             View Details
           </Link>
           <VehicleActions
+            contactHref="/contact"
             vehicle={{
               id: vehicle.id,
               title,

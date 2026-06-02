@@ -164,6 +164,158 @@ export async function deleteReview(form: FormData): Promise<void> {
   revalidatePath("/");
 }
 
+export type ImportState =
+  | { ok: boolean; message: string; inserted?: number; skipped?: number }
+  | null;
+
+/** RFC-4180-ish CSV parser: handles quoted fields, escaped quotes, and newlines inside quotes. */
+function parseCsv(text: string): string[][] {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let field = "";
+  let inQuotes = false;
+  const src = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+
+  for (let i = 0; i < src.length; i++) {
+    const c = src[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (src[i + 1] === '"') {
+          field += '"';
+          i++;
+        } else {
+          inQuotes = false;
+        }
+      } else {
+        field += c;
+      }
+    } else if (c === '"') {
+      inQuotes = true;
+    } else if (c === ",") {
+      row.push(field);
+      field = "";
+    } else if (c === "\n") {
+      row.push(field);
+      rows.push(row);
+      row = [];
+      field = "";
+    } else {
+      field += c;
+    }
+  }
+  if (field.length > 0 || row.length > 0) {
+    row.push(field);
+    rows.push(row);
+  }
+  return rows;
+}
+
+export async function importVehicles(
+  _prev: ImportState,
+  form: FormData
+): Promise<ImportState> {
+  if (!isSupabaseConfigured) {
+    return { ok: false, message: "Connect Supabase to import inventory." };
+  }
+
+  const file = form.get("file");
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false, message: "Please choose a CSV file to upload." };
+  }
+  if (file.size > 5_000_000) {
+    return { ok: false, message: "That file is too large (max 5 MB)." };
+  }
+
+  const rows = parseCsv(await file.text());
+  if (rows.length < 2) {
+    return { ok: false, message: "The CSV looks empty — it needs a header row plus at least one vehicle." };
+  }
+
+  const header = rows[0].map((h) => h.trim().toLowerCase());
+  const col = (name: string) => header.indexOf(name);
+  const cell = (row: string[], name: string) => {
+    const i = col(name);
+    return i >= 0 ? (row[i] ?? "").trim() : "";
+  };
+  const toNum = (v: string): number | null => {
+    const n = Number(v.replace(/[^0-9.]/g, ""));
+    return v.trim() && !Number.isNaN(n) ? n : null;
+  };
+  const toBool = (v: string) => /^(true|1|yes|y)$/i.test(v.trim());
+  const toList = (v: string) =>
+    v.split("|").map((s) => s.trim()).filter(Boolean);
+
+  const records: Record<string, unknown>[] = [];
+  let skipped = 0;
+
+  for (let r = 1; r < rows.length; r++) {
+    const row = rows[r];
+    if (row.length === 1 && row[0].trim() === "") continue; // blank line
+
+    const year = toNum(cell(row, "year"));
+    const make = cell(row, "make");
+    const model = cell(row, "model");
+    const price = toNum(cell(row, "price"));
+    if (!year || !make || !model || price == null) {
+      skipped++;
+      continue;
+    }
+
+    const trim = cell(row, "trim");
+    records.push({
+      year,
+      make,
+      model,
+      trim: trim || null,
+      body_type: cell(row, "body_type") || "Sedan",
+      price,
+      down_payment: toNum(cell(row, "down_payment")),
+      mileage: toNum(cell(row, "mileage")) ?? 0,
+      condition: cell(row, "condition") || "Very Good",
+      fuel_type: cell(row, "fuel_type") || "Gasoline",
+      transmission: cell(row, "transmission") || "Automatic",
+      drivetrain: cell(row, "drivetrain") || null,
+      exterior_color: cell(row, "exterior_color") || null,
+      interior_color: cell(row, "interior_color") || null,
+      vin: cell(row, "vin") || null,
+      description: cell(row, "description"),
+      features: toList(cell(row, "features")),
+      images: toList(cell(row, "images")),
+      warranty: cell(row, "warranty") || null,
+      is_featured: toBool(cell(row, "is_featured")),
+      is_sold: toBool(cell(row, "is_sold")),
+      slug: slugify(
+        `${year}-${make}-${model}-${trim}-${r}-${Math.random().toString(36).slice(2, 7)}`
+      ),
+    });
+  }
+
+  if (records.length === 0) {
+    return {
+      ok: false,
+      message: `No valid rows found. ${skipped} row(s) were missing a year, make, model, or price.`,
+    };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("vehicles").insert(records);
+  if (error) {
+    return { ok: false, message: `Import failed: ${error.message}` };
+  }
+
+  revalidatePath("/admin/inventory");
+  revalidatePath("/inventory");
+  revalidatePath("/");
+  return {
+    ok: true,
+    message: `Imported ${records.length} vehicle(s).${
+      skipped ? ` Skipped ${skipped} row(s) missing required fields.` : ""
+    }`,
+    inserted: records.length,
+    skipped,
+  };
+}
+
 export async function signOutAction(): Promise<void> {
   if (isSupabaseConfigured) {
     const supabase = await createClient();

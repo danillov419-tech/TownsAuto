@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PlusCircle, CheckCircle2, AlertTriangle } from "lucide-react";
+import { PlusCircle, CheckCircle2, AlertTriangle, Upload } from "lucide-react";
 import { getAllVehiclesForAdmin } from "@/lib/vehicles";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { AdminInventoryTable } from "@/components/admin/admin-inventory-table";
@@ -21,10 +21,16 @@ export default async function AdminInventoryPage({
           <h1 className="text-2xl font-bold text-ink-900">Inventory</h1>
           <p className="text-sm text-ink-500">{vehicles.length} vehicles</p>
         </div>
-        <Link href="/admin/vehicles/new" className="btn-primary">
-          <PlusCircle className="h-4 w-4" />
-          Add Vehicle
-        </Link>
+        <div className="flex gap-2">
+          <Link href="/admin/inventory/import" className="btn-outline">
+            <Upload className="h-4 w-4" />
+            Import CSV
+          </Link>
+          <Link href="/admin/vehicles/new" className="btn-primary">
+            <PlusCircle className="h-4 w-4" />
+            Add Vehicle
+          </Link>
+        </div>
       </div>
 
       {saved && (

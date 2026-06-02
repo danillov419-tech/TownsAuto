@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { Calendar, Gauge, ShieldCheck, DollarSign, Lock, CreditCard, FileText, Mail } from "lucide-react";
+import { Calendar, Gauge, ShieldCheck, DollarSign } from "lucide-react";
 import type { Vehicle } from "@/lib/types";
 import { formatMileage, formatMoney, vehicleTitle } from "@/lib/format";
 import { VehicleImage } from "./vehicle-image";
+import { VehicleActions } from "./vehicle-actions";
 
 const conditionColors: Record<string, string> = {
   Excellent: "bg-success-600",
@@ -74,29 +75,15 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
           <Link href={href} className="btn-primary w-full">
             View Details
           </Link>
-          <div className="grid grid-cols-2 gap-2">
-            <Link href={`${href}#reserve`} className="btn-primary">
-              <Lock className="h-4 w-4" />
-              Reserve
-            </Link>
-            <Link href={`${href}#buy`} className="btn-success">
-              <CreditCard className="h-4 w-4" />
-              Buy Outright
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <Link
-              href={`${href}#finance`}
-              className="btn border border-success-600/40 text-success-700 hover:bg-success-600/5"
-            >
-              <FileText className="h-4 w-4" />
-              Finance
-            </Link>
-            <Link href={`${href}#contact`} className="btn-outline">
-              <Mail className="h-4 w-4" />
-              Contact
-            </Link>
-          </div>
+          <VehicleActions
+            vehicle={{
+              id: vehicle.id,
+              title,
+              price: vehicle.price,
+              down_payment: vehicle.down_payment,
+              vin: vehicle.vin,
+            }}
+          />
         </div>
       </div>
     </article>

@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { notifyLead, notifyFinancing } from "@/lib/email";
 import type { LeadType } from "@/lib/types";
 
 export type FormState = {
@@ -39,12 +40,21 @@ export async function submitLead(
 
   if (!isSupabaseConfigured) return NOT_CONFIGURED;
 
+  // Compose the message from the note plus any structured extras the modals send.
+  const note = str(formData, "message");
+  const deposit = numOrNull(formData, "deposit_amount");
+  const preferredContact = str(formData, "preferred_contact");
+  const extras: string[] = [];
+  if (deposit != null) extras.push(`Intended deposit: $${deposit.toLocaleString()}`);
+  if (preferredContact) extras.push(`Preferred contact: ${preferredContact}`);
+  const composed = [note, ...extras].filter(Boolean).join("\n");
+
   const lead = {
     type: (str(formData, "type") || "contact") as LeadType,
     name,
     email,
     phone,
-    message: str(formData, "message") || null,
+    message: composed || null,
     vehicle_id: str(formData, "vehicle_id") || null,
     vehicle_label: str(formData, "vehicle_label") || null,
   };
@@ -53,6 +63,7 @@ export async function submitLead(
     const supabase = await createClient();
     const { error } = await supabase.from("leads").insert(lead);
     if (error) throw error;
+    await notifyLead(lead);
     return {
       ok: true,
       message: "Thanks! We received your request and will reach out shortly.",
@@ -93,6 +104,7 @@ export async function submitFinancing(
     const supabase = await createClient();
     const { error } = await supabase.from("financing_applications").insert(application);
     if (error) throw error;
+    await notifyFinancing(application);
     return {
       ok: true,
       message:

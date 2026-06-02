@@ -3,24 +3,22 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   ArrowLeft,
-  ArrowRight,
   Calendar,
   Gauge,
   MapPin,
   CheckCircle2,
   ShieldCheck,
   DollarSign,
-  CreditCard,
   FileText,
   Truck,
   Banknote,
-  ShoppingCart,
 } from "lucide-react";
 import { getAllVehiclesForAdmin, getVehicleBySlug, getRelatedVehicles } from "@/lib/vehicles";
 import { formatMileage, formatMoney, vehicleTitle } from "@/lib/format";
 import { siteConfig } from "@/lib/site-config";
 import { VehicleGallery } from "@/components/vehicle-gallery";
 import { VehicleContactCard } from "@/components/vehicle-contact-card";
+import { VehicleActions } from "@/components/vehicle-actions";
 import { VehicleCard } from "@/components/vehicle-card";
 
 export const dynamic = "force-dynamic";
@@ -150,22 +148,18 @@ export default async function VehicleDetailPage({
                 </div>
               )}
 
-              <div className="mt-5 space-y-2">
-                <a href="#reserve" className="btn-primary w-full">
-                  <DollarSign className="h-4 w-4" />
-                  Reserve Now
-                </a>
-                <a href="#buy" className="btn-success w-full">
-                  <CreditCard className="h-4 w-4" />
-                  Outright Payment
-                </a>
-                <Link
-                  href="/financing"
-                  className="btn w-full border border-success-600/40 text-success-700 hover:bg-success-600/5"
-                >
-                  <FileText className="h-4 w-4" />
-                  Apply for Financing
-                </Link>
+              <div className="mt-5">
+                <VehicleActions
+                  variant="detail"
+                  actions={["reserve", "buy", "finance"]}
+                  vehicle={{
+                    id: vehicle.id,
+                    title,
+                    price: vehicle.price,
+                    down_payment: vehicle.down_payment,
+                    vin: vehicle.vin,
+                  }}
+                />
               </div>
             </div>
 
@@ -267,11 +261,20 @@ export default async function VehicleDetailPage({
                 </li>
               </ol>
 
-              <a href="#buy" className="btn-success mt-6 w-full">
-                <ShoppingCart className="h-4 w-4" />
-                Start Your Purchase
-                <ArrowRight className="h-4 w-4" />
-              </a>
+              <div className="mt-6">
+                <VehicleActions
+                  variant="detail"
+                  actions={["buy"]}
+                  labels={{ buy: "Start Your Purchase" }}
+                  vehicle={{
+                    id: vehicle.id,
+                    title,
+                    price: vehicle.price,
+                    down_payment: vehicle.down_payment,
+                    vin: vehicle.vin,
+                  }}
+                />
+              </div>
               <p className="mt-2 text-center text-xs text-ink-400">
                 We&apos;ll reach out to arrange your down payment securely — no
                 payment is taken on this website.

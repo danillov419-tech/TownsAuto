@@ -67,6 +67,24 @@ const buyingPolicy = [
   },
 ];
 
+const fairPolicy = [
+  {
+    icon: Calendar,
+    title: "Appointments Required",
+    desc: "All vehicle viewings and test drives are by appointment only to ensure personalized service.",
+  },
+  {
+    icon: Car,
+    title: "Reservation for Viewing",
+    desc: "Interested in a vehicle? Reserve it in advance to guarantee it's held exclusively for you.",
+  },
+  {
+    icon: DollarSign,
+    title: "Reservation Fee: $300",
+    desc: "A $300 fee is required to hold a vehicle. This fee is applied to your down payment or is fully refundable if you don't proceed.",
+  },
+];
+
 const trustPoints = [
   {
     title: "Your Satisfaction is Our Success",
@@ -270,6 +288,43 @@ export default async function HomePage() {
             {featured.map((v) => (
               <VehicleCard key={v.id} vehicle={v} />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Fair & simple buying policy */}
+      <section className="bg-ink-50 py-20">
+        <div className="container-page">
+          <div className="card mx-auto max-w-6xl rounded-3xl p-8 sm:p-12">
+            <div className="mx-auto max-w-2xl text-center">
+              <h2 className="text-3xl font-extrabold text-ink-900 sm:text-4xl">
+                Our Fair &amp; Simple Buying Policy
+              </h2>
+              <p className="mt-4 text-ink-500">
+                To ensure a smooth and professional buying experience for everyone,
+                please review the following.
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-10 md:grid-cols-3">
+              {fairPolicy.map((p) => (
+                <div key={p.title} className="text-center">
+                  <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-600 text-white shadow-sm">
+                    <p.icon className="h-8 w-8" strokeWidth={2.25} />
+                  </span>
+                  <h3 className="mt-5 text-lg font-bold text-ink-900">{p.title}</h3>
+                  <p className="mt-3 text-ink-600">{p.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 flex items-center gap-3 rounded-xl border-l-4 border-brand-600 bg-brand-50 px-5 py-4 text-center sm:text-left">
+              <CheckCircle2 className="hidden h-6 w-6 shrink-0 text-brand-600 sm:block" />
+              <p className="font-semibold text-brand-700">
+                This policy helps us prioritize serious buyers while maintaining
+                flexibility and fairness for everyone. Thank you for your cooperation!
+              </p>
+            </div>
           </div>
         </div>
       </section>

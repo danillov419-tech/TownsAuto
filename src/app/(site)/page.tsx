@@ -225,11 +225,27 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="relative">
-            <div className="card flex aspect-[4/3] items-center justify-center bg-gradient-to-br from-brand-600 to-brand-800 text-white">
-              <div className="text-center">
-                <Star className="mx-auto h-12 w-12 text-accent-400" />
-                <p className="mt-4 text-2xl font-bold">Trusted by Local Buyers</p>
-                <p className="mt-1 text-brand-100">Quality cars. Fair prices. Real service.</p>
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl shadow-md">
+              <Image
+                src="/why-towns-auto.jpg"
+                alt="A happy Towns Auto customer with their newly purchased car"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
+              {/* Bottom gradient for legibility */}
+              <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink-900/85 via-ink-900/30 to-transparent" />
+              {/* Trusted badge */}
+              <div className="absolute inset-x-5 bottom-5">
+                <div className="flex items-center gap-3 rounded-xl bg-white/95 p-4 shadow-lg backdrop-blur">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent-400/20 text-accent-500">
+                    <Star className="h-6 w-6 fill-accent-400 text-accent-500" />
+                  </span>
+                  <div>
+                    <p className="font-bold text-ink-900">Trusted by Local Buyers</p>
+                    <p className="text-sm text-ink-500">Quality cars. Fair prices. Real service.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

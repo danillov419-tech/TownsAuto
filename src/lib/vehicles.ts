@@ -26,8 +26,8 @@ export async function getVehicles(): Promise<Vehicle[]> {
     if (error) throw error;
     return (data as Vehicle[]) ?? [];
   } catch (err) {
-    console.error("getVehicles failed, falling back to sample data:", err);
-    return [...sampleVehicles].filter((v) => !v.is_sold);
+    console.error("getVehicles failed:", err);
+    return [];
   }
 }
 
@@ -51,8 +51,8 @@ export async function getVehicleBySlug(slug: string): Promise<Vehicle | null> {
     if (error) throw error;
     return (data as Vehicle) ?? null;
   } catch (err) {
-    console.error("getVehicleBySlug failed, falling back to sample data:", err);
-    return sampleVehicles.find((v) => v.slug === slug) ?? null;
+    console.error("getVehicleBySlug failed:", err);
+    return null;
   }
 }
 
@@ -71,7 +71,7 @@ export async function getVehicleById(id: string): Promise<Vehicle | null> {
     return (data as Vehicle) ?? null;
   } catch (err) {
     console.error("getVehicleById failed:", err);
-    return sampleVehicles.find((v) => v.id === id) ?? null;
+    return null;
   }
 }
 

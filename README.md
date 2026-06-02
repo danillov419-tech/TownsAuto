@@ -28,9 +28,11 @@ cars and forms are disabled (with a friendly notice).
 ## 2. Connect Supabase
 
 1. Create a project at [supabase.com](https://supabase.com).
-2. In the dashboard, open **SQL Editor** and run the contents of
-   [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql).
-   This creates the tables, security policies, and the photo storage bucket.
+2. In the dashboard, open **SQL Editor** and run, in order:
+   - [`supabase/migrations/0001_init.sql`](supabase/migrations/0001_init.sql) —
+     vehicles, leads, financing tables, security policies, photo storage bucket.
+   - [`supabase/migrations/0002_reviews.sql`](supabase/migrations/0002_reviews.sql) —
+     customer reviews table + avatar storage bucket.
 3. Copy `.env.example` to `.env.local` and fill in your keys from
    **Project Settings → API**:
 
@@ -38,11 +40,15 @@ cars and forms are disabled (with a friendly notice).
    cp .env.example .env.local
    ```
 
-4. (Optional) Load the sample inventory into your database:
+4. (Optional) Load sample data. Either run the seed script for vehicles:
 
    ```bash
    npm run seed
    ```
+
+   …or paste the generated SQL files into the Supabase SQL editor (no keys
+   needed): [`supabase/seed.sql`](supabase/seed.sql) for vehicles and
+   [`supabase/seed-reviews.sql`](supabase/seed-reviews.sql) for 24 reviews.
 
 5. Create an admin login: in Supabase, go to **Authentication → Users → Add
    user**, set an email and password. Use those to sign in at `/admin/login`.

@@ -17,7 +17,9 @@ import {
 } from "lucide-react";
 import { siteConfig } from "@/lib/site-config";
 import { getFeaturedVehicles } from "@/lib/vehicles";
+import { getFeaturedReviews } from "@/lib/reviews";
 import { VehicleCard } from "@/components/vehicle-card";
+import { ReviewCard } from "@/components/review-card";
 
 const features = [
   { icon: DollarSign, title: "Auction Prices", desc: "Quality used cars at honest, below-market prices." },
@@ -106,6 +108,7 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const featured = await getFeaturedVehicles(6);
+  const reviews = await getFeaturedReviews(3);
 
   return (
     <>
@@ -384,6 +387,36 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Testimonials */}
+      {reviews.length > 0 && (
+        <section className="bg-ink-50 py-20">
+          <div className="container-page">
+            <div className="mx-auto max-w-2xl text-center">
+              <h2 className="text-3xl font-extrabold text-ink-900 sm:text-4xl">
+                Don&apos;t Just Take Our Word For It&hellip;
+              </h2>
+              <p className="mt-4 text-ink-500">
+                Real stories from drivers who chose {siteConfig.name} and experienced
+                the no-regrets difference.
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-6 md:grid-cols-3">
+              {reviews.map((r) => (
+                <ReviewCard key={r.id} review={r} />
+              ))}
+            </div>
+
+            <div className="mt-12 text-center">
+              <Link href="/reviews" className="btn-outline">
+                View All Reviews
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA */}
       <section className="bg-brand-700 py-16 text-white">

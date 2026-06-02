@@ -109,6 +109,59 @@ export async function deleteVehicle(form: FormData): Promise<void> {
   revalidatePath("/inventory");
 }
 
+export async function saveReview(
+  _prev: AdminFormState,
+  form: FormData
+): Promise<AdminFormState> {
+  if (!isSupabaseConfigured) {
+    return { ok: false, message: "Connect Supabase to manage reviews." };
+  }
+
+  const id = str(form, "id");
+  const name = str(form, "name");
+  const quote = str(form, "quote");
+
+  if (!name || !quote) {
+    return { ok: false, message: "Name and review text are required." };
+  }
+
+  const ratingRaw = num(form, "rating") || 5;
+  const record = {
+    name,
+    location: str(form, "location") || null,
+    rating: Math.min(5, Math.max(1, ratingRaw)),
+    quote,
+    avatar_url: str(form, "avatar_url") || null,
+    is_published: form.get("is_published") === "on",
+    is_featured: form.get("is_featured") === "on",
+    sort_order: num(form, "sort_order"),
+  };
+
+  const supabase = await createClient();
+  if (id) {
+    const { error } = await supabase.from("reviews").update(record).eq("id", id);
+    if (error) return { ok: false, message: error.message };
+  } else {
+    const { error } = await supabase.from("reviews").insert(record);
+    if (error) return { ok: false, message: error.message };
+  }
+
+  revalidatePath("/admin/reviews");
+  revalidatePath("/reviews");
+  revalidatePath("/");
+  redirect("/admin/reviews?saved=1");
+}
+
+export async function deleteReview(form: FormData): Promise<void> {
+  const id = str(form, "id");
+  if (!id || !isSupabaseConfigured) return;
+  const supabase = await createClient();
+  await supabase.from("reviews").delete().eq("id", id);
+  revalidatePath("/admin/reviews");
+  revalidatePath("/reviews");
+  revalidatePath("/");
+}
+
 export async function signOutAction(): Promise<void> {
   if (isSupabaseConfigured) {
     const supabase = await createClient();

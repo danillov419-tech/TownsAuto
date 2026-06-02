@@ -61,6 +61,19 @@ export interface Lead {
   created_at?: string;
 }
 
+export interface Review {
+  id: string;
+  name: string;
+  location: string | null;
+  rating: number;
+  quote: string;
+  avatar_url: string | null;
+  is_published: boolean;
+  is_featured: boolean;
+  sort_order: number;
+  created_at: string;
+}
+
 export interface FinancingApplication {
   id?: string;
   full_name: string;

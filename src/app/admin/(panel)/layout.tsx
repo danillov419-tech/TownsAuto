@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { LayoutDashboard, PlusCircle, Inbox, ExternalLink, LogOut } from "lucide-react";
+import { LayoutDashboard, PlusCircle, Inbox, ExternalLink, LogOut, Star } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { signOutAction } from "../actions";
@@ -9,6 +9,7 @@ import { Logo } from "@/components/logo";
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/vehicles/new", label: "Add Vehicle", icon: PlusCircle },
+  { href: "/admin/reviews", label: "Reviews", icon: Star },
   { href: "/admin/leads", label: "Leads", icon: Inbox },
 ];
 

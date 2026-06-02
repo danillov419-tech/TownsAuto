@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   MessageCircle,
@@ -55,6 +56,9 @@ const trustPoints = [
   },
 ];
 
+// Render on demand so featured cars reflect live Supabase inventory.
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const featured = await getFeaturedVehicles(6);
 
@@ -62,14 +66,15 @@ export default async function HomePage() {
     <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink-900 text-white">
-        <div className="absolute inset-0 bg-gradient-to-br from-ink-900 via-ink-800 to-brand-900" />
-        <div
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.15), transparent 40%), radial-gradient(circle at 80% 0%, rgba(37,99,235,0.4), transparent 45%)",
-          }}
+        <Image
+          src="/hero.png"
+          alt="Towns Auto dealership lineup at sunset"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-900/95 via-ink-900/75 to-ink-900/60" />
         <div className="container-page relative py-24 text-center sm:py-32">
           <h1 className="mx-auto max-w-4xl text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl">
             Affordable Used Cars for Sale

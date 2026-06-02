@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { getVehicles } from "@/lib/vehicles";
 import { InventoryBrowser } from "@/components/inventory-browser";
 
+// Render on demand so the listing always reflects live Supabase inventory.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Inventory — Used Cars for Sale",
   description:

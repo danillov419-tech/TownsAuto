@@ -7,7 +7,6 @@ import {
   ShieldCheck,
   Truck,
   Award,
-  CalendarCheck,
   Car,
   CheckCircle2,
   Star,
@@ -65,24 +64,6 @@ const buyingPolicy = [
     icon: DollarSign,
     title: "Reservation Fee: $300",
     desc: "A $300 reservation fee is required to hold the vehicle. This fee is part of the down payment if you proceed with the purchase. If you choose not to proceed, the fee is fully refundable. This policy helps us prioritize serious buyers while maintaining flexibility and fairness.",
-  },
-];
-
-const policies = [
-  {
-    icon: CalendarCheck,
-    title: "Appointments Welcome",
-    desc: "Schedule a visit or test drive so we can give you our full attention.",
-  },
-  {
-    icon: Car,
-    title: "Inspect Before You Buy",
-    desc: "Every vehicle can be viewed and inspected before any commitment.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "90-Day Warranty",
-    desc: "Drive with peace of mind — our vehicles come with warranty coverage.",
   },
 ];
 
@@ -209,29 +190,6 @@ export default async function HomePage() {
             Thank you for your cooperation and understanding. We look forward to
             assisting you!
           </p>
-        </div>
-      </section>
-
-      {/* Buying policy */}
-      <section className="bg-white py-20">
-        <div className="container-page">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-extrabold text-ink-900">How Buying Works</h2>
-            <p className="mt-3 text-ink-500">
-              A straightforward, no-pressure process designed around you.
-            </p>
-          </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {policies.map((p) => (
-              <div key={p.title} className="card p-7 text-center">
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600">
-                  <p.icon className="h-7 w-7" />
-                </div>
-                <h3 className="mt-5 text-lg font-bold text-ink-900">{p.title}</h3>
-                <p className="mt-2 text-sm text-ink-500">{p.desc}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

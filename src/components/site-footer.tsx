@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
+import { Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 import { Logo } from "./logo";
 import { siteConfig } from "@/lib/site-config";
 
@@ -44,10 +44,6 @@ export function SiteFooter() {
               >
                 WhatsApp {siteConfig.whatsapp}
               </a>
-            </li>
-            <li className="flex items-center gap-2">
-              <Phone className="h-4 w-4 text-brand-600" />
-              <a href={siteConfig.phoneHref} className="hover:text-brand-700">{siteConfig.phone}</a>
             </li>
             <li className="flex items-center gap-2">
               <Mail className="h-4 w-4 text-brand-600" />
